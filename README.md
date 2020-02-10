@@ -1,5 +1,7 @@
 # AREP-RETO-02
 
+[![CircleCI](https://circleci.com/gh/cdavidd/AREP-RETO-02.svg?style=svg)](https://circleci.com/gh/cdavidd/AREP-RETO-02)
+
 ## Heroku
 
 - https://limitless-hamlet-51946.herokuapp.com/
