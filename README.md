@@ -38,8 +38,60 @@ heroku/7.37.0 win32-x64 node-v12.4.0
 
 ## Ejecutando las pruebas
 
-```java
+Comenzaremos primero inicializando el servidor para poder hacerle las peticiones
 
+```java
+ @Before
+    public void servidor() {
+        Thread servidor = new Thread(() -> {
+            try {
+                HttpServer.main(null);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                fail();
+                // e.printStackTrace();
+            }
+        });
+        servidor.start();
+    }
+```
+
+Ahora haremos la conexión y enviaremos la petición a resolver
+
+```java
+@Test
+    public void peticion() {
+        Socket echoSocket = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+        try {
+            echoSocket = new Socket("127.0.0.1", 35000);
+            // System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            // System.out.println(echoSocket == null);
+            out = new PrintWriter(echoSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+        } catch (UnknownHostException e) {
+            System.err.println("Don’t know about host!.");
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for " + "the connection to: localhost. " + e);
+            // System.exit(1);
+        }
+
+        String res;
+
+        try {
+            out.println("GET /?id=1 HTTP/1.1 \n");
+            res = in.readLine();
+            assertTrue(res.contains("200"));
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            // e.printStackTrace();
+            fail();
+        }
+        System.out.println("prueba 4");
+    }
 ```
 
 ## Generar javaDocs
