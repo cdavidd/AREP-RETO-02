@@ -16,7 +16,12 @@ import edu.escuelaing.arep.model.Pelicula;
 public class HttpServer {
 
     static PeliculasPers peliculasDB;
-
+    
+    /**
+     * Inicializa el servidor
+     * @param args
+     * @throws IOException 
+     */
     public static void main(String[] args) throws IOException {
         int port = getPort();
         ServerSocket serverSocket = null;
@@ -77,7 +82,12 @@ public class HttpServer {
         }
 
     }
-
+    /**
+     * Busca el index ingresado
+     * @param id key de la pelicula 
+     * @param b boolean para saber que pagina retornar
+     * @return pagina de visualizacion al usuario
+     */
     private static String index(int id, boolean b) {
         String res = "";
         Pelicula busqueda = null;
@@ -121,7 +131,11 @@ public class HttpServer {
         }
         return res;
     }
-
+    
+    /**
+     * Puerto al que se utilizara para el servidor
+     * @return 
+     */
     static int getPort() {
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));

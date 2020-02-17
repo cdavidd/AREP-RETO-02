@@ -20,11 +20,17 @@ public class PeliculasDBImpl implements PeliculasPers {
     private static String passwordDB = "eb9eea3f28cda481450f86b6646fb25d67f71a628a003a0e223b989a95cabf70";
     private static Connection connection = null;
 
+    /**
+     * Realiza la conexion a la base de datos y crea las tablas de ser necesario
+     */
     public PeliculasDBImpl() {
         coneccion();
         createTablePelicula();
     }
 
+    /**
+     * Realiza la coneccion a la base de datos
+     */
     public void coneccion() {
         try {
             Class.forName("org.postgresql.Driver");
@@ -39,14 +45,19 @@ public class PeliculasDBImpl implements PeliculasPers {
         }
     }
 
+    /**
+     * Crea la tabla si es necesario
+     */
     public void createTablePelicula() {
         Statement stmt = null;
         DatabaseMetaData dbm = null;
         try {
             dbm = connection.getMetaData();
-            ResultSet tables = null;
-            tables = dbm.getTables(null, null, "PELICULA", null);
-            if (!tables.next()) {
+            ResultSet tables = dbm.getTables(null, null, "pelicula", null);
+            boolean existe = tables.next();
+            // System.out.println("Existeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee " + existe);
+            if (!existe) {
+                // System.out.println("Creaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + tables.next());
                 stmt = connection.createStatement();
                 String sql = "CREATE TABLE PELICULA " + "(id INTEGER not NULL, " + " name VARCHAR(40), "
                         + " descripcion VARCHAR(255), " + " director VARCHAR(40), " + " PRIMARY KEY ( id ))";
@@ -61,6 +72,12 @@ public class PeliculasDBImpl implements PeliculasPers {
         }
     }
 
+    /**
+     * Inserta la pelicula en la base de datos
+     * 
+     * @param peli
+     * @throws PeliculaDBException
+     */
     public void insertPeliculas(Pelicula peli) throws PeliculaDBException {
         try {
             Statement stmt = connection.createStatement();
@@ -74,6 +91,12 @@ public class PeliculasDBImpl implements PeliculasPers {
         }
     }
 
+    /**
+     * Obtiene las peliculas de la base de datos
+     * 
+     * @return
+     * @throws PeliculaDBException
+     */
     public List<Pelicula> getPeliculas() throws PeliculaDBException {
         // TODO Auto-generated method stub
         Statement stmt = null;
